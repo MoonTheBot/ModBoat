@@ -1,0 +1,19 @@
+{
+    "name": "modboat",
+    "version": "1.0.0",
+    "description": "Simple moderation bot built with JavaScript for beginners.",
+    "main": "index.js",
+    "scripts": {
+      "test": "node index.js",
+      "start": "node index.js"
+    },
+    "author": "IHeatherB",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.16.4",
+      "discord.js": "^11.4.2"
+    },
+    "repository": {
+      "url": "https://github.com/IHeatherB/ModBoat"
+    }
+  }
