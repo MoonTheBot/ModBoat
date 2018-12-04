@@ -1,5 +1,6 @@
 module.exports = {
     token: "YourBoatTokenHere",
     prefix: "!",
-    owner: "YourUserIDHere"
+    owner: "YourUserIDHere",
+    modLogChannel: "mod-log"
 };
