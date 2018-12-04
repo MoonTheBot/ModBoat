@@ -65,6 +65,60 @@ client.on("message", async (message) => {
         return message.channel.send(`***${member.user.tag} has been warned.***`);
         return member.send(`You have been warned on **${message.guild.name}** for: **\`${dataWarn}**\`.`);
     }
+
+    if (command === "mute") {
+        if (!message.member.roles.some(r=>["Administrator", "Moderator", "Admin", "Mod"].includes(r.name)) )
+        return message.reply("**Sorry, you don't have the required role to execute this command.**");
+
+        const mutedRole = message.guild.roles.find(role => role.name === "Muted");
+        if (!mutedRole) return message.reply("**There is no muted role found on this server.**");
+
+        const member = message.mentions.members.first() || message.guild.members.get(args[0]);
+        if (!member)
+        return message.reply("**Please specify a user in order to mute.**");
+
+        const channel = message.guild.channels.find(ch => ch.name === settings.modLogChannel);
+        if (!channel) return;
+
+        const embed = new Discord.RichEmbed()
+        .setTitle(`${client.user.username} Warning System`)
+        .addField("Possible Moderator", `${message.author.tag}`)
+        .addField("Target", `${member.user.username}`)
+        .setColor("ORANGE")
+        await channel.send({embed});
+
+        return message.channel.send(`***${member.user.tag} has been muted.***`);
+        return message.send(`You have been muted on **${message.guild.name}**.`);
+
+        await member.addRole(mutedRole);
+    }
+
+    if (command === "unmute") {
+        if (!message.member.roles.some(r=>["Administrator", "Moderator", "Admin", "Mod"].includes(r.name)) )
+        return message.reply("**Sorry, you don't have the required role to execute this command.**");
+
+        const mutedRole = message.guild.roles.find(role => role.name === "Muted");
+        if (!mutedRole) return message.reply("**There is no muted role found on this server.**");
+
+        const member = message.mentions.members.first() || message.guild.members.get(args[0]);
+        if (!member)
+        return message.reply("**Please specify a user in order to unmute.**");
+
+        const channel = message.guild.channels.find(ch => ch.name === settings.modLogChannel);
+        if (!channel) return;
+
+        const embed = new Discord.RichEmbed()
+        .setTitle(`${client.user.username} Warning System`)
+        .addField("Possible Moderator", `${message.author.tag}`)
+        .addField("Target", `${member.user.username}`)
+        .setColor("GREEN")
+        await channel.send({embed});
+
+        return message.channel.send(`***${member.user.tag} has been unmuted.***`);
+        return message.send(`You have been unmuted on **${message.guild.name}**.`);
+
+        await member.removeRole(mutedRole);
+    }
 });
 
 client.login(settings.token);
