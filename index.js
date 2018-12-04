@@ -67,4 +67,4 @@ client.on("message", async (message) => {
     }
 });
 
-client.login(settings.prefix);
+client.login(settings.token);
