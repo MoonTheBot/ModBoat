@@ -12,3 +12,15 @@ client.on("ready", () => {
     client.user.setActivity(`In ${client.guilds.size} Servers`);
     client.user.setStatus("dnd");
 });
+
+client.on("message", async (message) => {
+    if (message.channel.type === "dm") return;
+    if (message.author.bot) return;
+     
+    if (message.content.indexOf(settings.prefix) !== 0) return;
+
+    const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+});
+
+client.login(settings.prefix);
