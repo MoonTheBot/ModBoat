@@ -88,7 +88,7 @@ client.on("message", async (message) => {
         await channel.send({embed});
 
         return message.channel.send(`***${member.user.tag} has been muted.***`);
-        return message.send(`You have been muted on **${message.guild.name}**.`);
+        return member.send(`You have been muted on **${message.guild.name}**.`);
 
         await member.addRole(mutedRole);
     }
@@ -115,9 +115,35 @@ client.on("message", async (message) => {
         await channel.send({embed});
 
         return message.channel.send(`***${member.user.tag} has been unmuted.***`);
-        return message.send(`You have been unmuted on **${message.guild.name}**.`);
+        return member.send(`You have been unmuted on **${message.guild.name}**.`);
 
         await member.removeRole(mutedRole);
+    }
+
+    if (command === "kick") {
+        if (!message.member.roles.some(r=>["Administrator", "Moderator", "Admin", "Mod"].includes(r.name)) )
+        return message.reply("**Sorry, you don't have the required role to execute this command.**");
+
+        const dataKick = args.join(" ");
+        if (!dataKick) return message.reply("**Please specify a reason in order to kick this user.**")
+
+        const member = message.mentions.members.first() || message.guild.members.get(args[0]);
+        if (!member)
+        return message.reply("**Please specify a user in order to kick.**");
+
+        const channel = message.guild.channels.find(ch => ch.name === settings.modLogChannel);
+        if (!channel) return;
+
+        const embed = new Discord.RichEmbed()
+        .setTitle(`${client.user.username} Warning System`)
+        .addField("Possible Moderator", `${message.author.tag}`)
+        .addField("Target", `${member.user.username}`)
+        .addField("Reason", `${dataKick}`)
+        .setColor("RED")
+        await channel.send({embed});
+
+        return message.channel.send(`***${member.user.tag} has been kick.***`).catch(error => message.channel.send(`**${member.user.tag} was unable to be kick, please try again.`));
+        await member.kick(`${dataKick}`);
     }
 });
 
