@@ -1,3 +1,5 @@
+if (Number(process.version.slice(1).split(".")[0]) < 8) throw new Error("Node 8.0.0 or higher is required to launch this bot, please upgrade Node on your system.");
+
 const Discord = require("discord.js");
 const client = new Discord.Client({
     fetchAllMembers: false,
